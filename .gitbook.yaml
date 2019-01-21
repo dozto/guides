@@ -4,4 +4,9 @@ structure:
   readme: index.md
   summary: CONTENTS.md
 
-# redirects:
+redirects:
+  salse/sales-process: ./salse/sales-process.md
+  reqs/reqs-engineering: ./reqs/reqs-engineering.md
+  ui-ux/principles: ./ui-ux/principles.md
+  dev/tests: ./dev/tests.md
+  devops/ci-cd: ./devops/ci-cd.md
