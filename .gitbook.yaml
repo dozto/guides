@@ -1,0 +1,6 @@
+root: ./
+
+readme: index.md
+summary: CONTENTS.md
+
+# redirects:
