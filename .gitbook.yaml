@@ -1,7 +1,7 @@
 root: ./
 
 structure:
-  readme: index.md
+  readme: README.md
   summary: CONTENTS.md
 
 redirects:

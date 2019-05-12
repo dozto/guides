@@ -1,20 +1,18 @@
 # 目录
 
-## 销售[SALES]
+## 通用[GENERAL]
 
-- [客户对接](salse/sales-process.md)
+- [沟通方式](general/communication.md)
 
-## 需求[REQS]
+## 敏捷开发[AGILE]
 
-- [需求整理](reqs/reqs-engineering.md)
-
-## UI/UX
-
-- [需求整理](ui-ux/principles.md)
+- [分工协作](management/cooperation.md)
+- [SCRUM 说明](management/agile-scrum.md)
 
 ## 开发[DEV]
 
-- [测试](dev/tests.md)
+- [API 规范](dev/api.md)
+- [代码规范](dev/clean-code.md)
 
 ## 运维[DEVOPS]
 
