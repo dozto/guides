@@ -5,8 +5,9 @@ structure:
   summary: CONTENTS.md
 
 redirects:
-  salse/sales-process: ./salse/sales-process.md
-  reqs/reqs-engineering: ./reqs/reqs-engineering.md
-  ui-ux/principles: ./ui-ux/principles.md
-  dev/tests: ./dev/tests.md
+  general/communication: ./general/communication.md
+  management/cooperation: ./management/cooperation.md
+  management/agile-scrum: ./management/agile-scrum.md
+  dev/api: ./dev/api.md
+  dev/clean-code: ./dev/clean-code.md
   devops/ci-cd: ./devops/ci-cd.md
