@@ -6,6 +6,7 @@ structure:
 
 redirects:
   general/communication: ./general/communication.md
+  general/project-process: ./general/project-process.md
   management/cooperation: ./management/cooperation.md
   management/agile-scrum: ./management/agile-scrum.md
   dev/api: ./dev/api.md
