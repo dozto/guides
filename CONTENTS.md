@@ -3,6 +3,7 @@
 ## 通用[GENERAL]
 
 - [沟通方式](general/communication.md)
+- [项目流程](general/project-process.md)
 
 ## 敏捷开发[AGILE]
 
