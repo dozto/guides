@@ -378,10 +378,32 @@ HTTP/1.1 429 Too Many Requests
 
 #### 提供服务的状态查询接口
 
-所有的服务均提供`/api/status` 来返回当前服务的状态。在每个状态返回结果中需要饱含一下内容：
+所有的服务均提供`/api/status` 来返回当前服务的状态。在每个状态返回结果中需要饱含一下内容（待商榷）：
 
 ```yaml
-- 
+# TBD check lib `systeminformation`
+- version: service版本
+- uptime: 系统运行时间
+- cpuMinSpeed:
+- cpuAvgSpeed:
+- cpuMaxSpeed:
+- cpuAvgLoad:
+- cpuCurrentLoad:
+- memTotal:
+- memUsed:
+- memAvailable:
+- osPlatform:
+- osName:
+- osVersion:
+- diskTotal:
+- diskFree:
+- ipv4:
+- ipv6:
+- ipMac:
+- ipInternal:
+- ipVirtual:
+- docker:
+- ...
 ```
 
 #### 提供完整的 Swagger 文档
