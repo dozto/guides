@@ -2,22 +2,25 @@
 
 > 翻译自 `HTTP API Design Guide` [https://github.com/interagent/http-api-design](https://github.com/interagent/http-api-design)
 >
-> 由 Dozto 根据自身时间改进
+> 由 Dozto 根据自身实践改进，最后更新日期**12th Aug, 2019**
 
 ## 目录
 
 - 基础
   - 强制使用安全连接（Secure Connections）
   - 强制头信息 Accept 中提供版本号
-  - 支持 Etag 缓存
-  - 为内省而提供 Request-Id
-  - 通过请求中的范围（Range）拆分大的响应
+  - 为内省而提供 X-Request-Id
+  - 在Header或Cookie信息中的包含认证信息*
+  - 为多语言客户端通过`Accept-Language`提供多语言支持*
+  - 访问系统的关键功能需要提供管理员的X-Admin-Key*
+  
 - 请求（Requests）
   - 在请求的 body 体使用 JSON 格式数据
   - 使用统一的资源路径格式
   - 路径和属性要小写
   - 支持方便的无 id 间接引用
   - 最小化路径嵌套
+  
 - 响应（Responses）
   - 返回合适的状态码
   - 提供全部可用的资源
@@ -25,15 +28,16 @@
   - 提供标准的时间戳
   - 使用 UTC（世界标准时间）时间，用 ISO8601 进行格式化
   - 嵌套外键关系
-  - 生成结构化的错误
-  - 显示频率限制状态
-  - 保证响应 JSON 最小化
+  - 生成结构化的错误*
+  
 - 工件（Artifacts）
+  
+  * 提供服务的状态查询接口*
+  
   - 提供机器可读的 JSON 模式
   - 提供人类可读的文档
   - 提供可执行的例子
   - 描述稳定性
-- 译者注
 
 ### 基础
 
@@ -51,7 +55,7 @@
 
 把非 TLS 的请求重定向(Redirect)至 TLS 连接是不明智的，这种含混/不好的客户端行为不会带来明显好处。依赖于重定向的客户端访问不仅会导致双倍的服务器负载，还会使 TLS 加密失去意义，因为在首次非 TLS 调用时，敏感信息就已经暴露出去了。
 
-#### 强制头信息 Accept 中提供版本号 [_暂不使用_]
+#### 强制头信息 Accept 中提供版本号
 
 制定版本并在版本之间平缓过渡对于设计和维护一套 API 是个巨大的挑战。所以，最好在设计之初就使用一些方法来预防可能会遇到的问题。
 
@@ -63,17 +67,39 @@
 Accept: application/vnd.heroku+json; version=3
 ```
 
-#### 支持 Etag 缓存 [_暂不使用_]
+#### 为内省而提供 X-Request-Id
 
-在所有返回的响应中包含`ETag`头信息，用来标识资源的版本。这让用户对资源进行缓存处理成为可能，在后续的访问请求中把`If-None-Match`头信息设置为之前得到的`ETag`值，就可以侦测到已缓存的资源是否需要更新。
+为每一个请求响应包含一个`X-Request-Id`头，并使用 UUID 作为该值。通过在客户端、服务器或任何支持服务上记录该值，它能为我们提供一种机制来跟踪、诊断和调试请求。由 Gateway 来处理。
 
-#### 为内省而提供 Request-Id
+#### 在Header或Cookie信息中的包含认证信息
 
-为每一个请求响应包含一个`Request-Id`头，并使用 UUID 作为该值。通过在客户端、服务器或任何支持服务上记录该值，它能为我们提供一种机制来跟踪、诊断和调试请求。由 Gateway 来处理。
+在需要身份认证的服务器中，对web项目可以使用Cookie信息来提供身份认证信息，如`Cookie: authentication=xxxx;` 对APP等可以使用`authentication` header来提供身份验证信息。
 
-#### 通过请求中的范围（Range）拆分大的响应 [_暂不使用_]
+后端服务需要同时支持两种形式的身份验证，方便不同客户端对API进行调用。 
 
-一个大的响应应该通过多个请求使用`Range`头信息来拆分，并指定如何取得。详细的请求和响应的头信息（header），状态码(status code)，范围(limit)，排序(ordering)和迭代(iteration)等，参考[Heroku Platform API discussion of Ranges](https://devcenter.heroku.com/articles/platform-api-reference#ranges).
+#### 为多语言客户端端通过`Accept-Language`提供多语言支持
+
+在需要多语言支持的情况下，后端返回的人类可读信息需要匹配请求中的`Accpet-Language`，可用的`Accpet-Language`值包括`zh`, `en`, `zh-CN`以及 `en-US`。这里的`Accept-Language`是一个可选选项，默认值根据不同项目而不同。
+
+例如，在`Accpet-Language` 为`zh`的情况下，返回的错误信息如下。
+
+```json
+{
+  "errors": [{
+    "requestId": "01234567-89ab-cdef-0123-456789abcdef"
+    "type": "RATE_LIMIT_RACHED",
+    "message": "API反问达到上限，请稍后再试。",
+    "status": "429",
+    "isSentry": true
+  }]
+}
+```
+
+#### 访问系统的关键功能需要提供管理员的X-Admin-Key
+
+通常在系统中会有一些仅供管理员查看/调用的API，对于这些API需要提供特殊的管理员可以访问的`X-Admin-Key`来进行身份验证。
+
+比如，每个service中可能会有的config相关的API，和seting相关的API,以及查看服务器状态和API文档的请求都需要校验这个key，这个key永远不存储在客户端中，仅供开发者/管理员手动管理。
 
 ### 请求（Requests）
 
@@ -81,11 +107,10 @@ Accept: application/vnd.heroku+json; version=3
 
 在 `PUT`/`PATCH`/`POST` 请求的正文（request bodies）中使用 JSON 格式数据，而不是使用 form 表单形式的数据。这与我们使用 JSON 格式返回请求相对应，例如:
 
-```
+```bash
 $ curl -X POST https://service.com/apps \
     -H "Content-Type: application/json" \
     -d '{"name": "demoapp"}'
-
 {
   "id": "01234567-89ab-cdef-0123-456789abcdef",
   "name": "demoapp",
@@ -136,7 +161,7 @@ serviceClass: "first"
 
 在某些情况下，让用户提供 ID 去定位资源是不方便的。例如，一个用户想取得他在 Heroku 平台 app 信息，但是这个 app 的唯一标识是 UUID。这种情况下，你应该支持接口通过名字和 ID 都能访问，例如:
 
-```
+```bash
 $ curl https://service.com/apps/{appIdOrName}
 $ curl https://service.com/apps/97addcf0-c182
 $ curl https://service.com/apps/www-prod
@@ -171,7 +196,6 @@ $ curl https://service.com/apps/www-prod
 - `200`: `GET`请求成功，及`DELETE`或`PATCH`同步请求完成，或者`PUT`同步更新一个已存在的资源
 - `201`: `POST` 同步请求完成，或者`PUT`同步创建一个新的资源
 - `202`: `POST`，`PUT`，`DELETE`，或`PATCH`请求接收，将被异步处理
-- `206`: `GET` 请求成功，但是只返回一部分，参考：[上文中范围分页](#按范围分页)
 
 使用身份认证（authentication）和授权（authorization）错误码时需要注意：
 
@@ -209,7 +233,7 @@ Content-Type: application/json;charset=utf-8
 
 当请求状态码为 202 时，不返回所有可用资源，例如：
 
-```
+```bash
 $ curl -X DELETE \
   https://service.com/apps/1f9b/dynos/05bd
 
@@ -292,7 +316,16 @@ Content-Type: application/json;charset=utf-8
 
 #### 生成结构化的错误
 
-响应错误的时，生成统一的、结构化的错误信息。包含一个机器可读的错误 `type`，一个人类可读的错误信息（`message`），根据情况可以添加一个`url`来告诉客户端关于这个错误的更多信息以及如何去解决它，例如:
+响应错误的时，生成统一的、结构化的错误信息。所有错误需要放在`errors`中返回给前端，同时每个error需要遵循以下结构。
+
+```yaml
+- requestId: 请求的X-Request-Id，方便对异常进行追踪。
+- type: 错误类型，为英文的错误定义名称，如`RATE_LIMIT_RACHED`, `DUPLICATED_EMAIL`等。
+- serviceType: 服务类型，通过服务类定定义错误发生所在的服务，如`USER`, `FORM`, `WECHAT`等。
+- message: 错误需要提供的通知消息，供客户端在客户端展示，是人类客户的友好的错误信息，需要支持多语言。
+- isSentry: 错误是否发送到sentry。
+- throwedAt: 错误发生的时间。
+```
 
 ```
 HTTP/1.1 429 Too Many Requests
@@ -300,29 +333,18 @@ HTTP/1.1 429 Too Many Requests
 
 ```json
 {
-  "error": {
+  "errors": [{
+    "requestId": "01234567-89ab-cdef-0123-456789abcdef"
     "type": "RATE_LIMIT_RACHED",
+    "serviceType": "USER"
     "message": "Account reached its API rate limit.",
-    "url": "https://docs.service.com/rate-limits",
-    "subErrors": [
-      {
-        "type": "REQUEST_TOO_OFTEN"
-        //...
-      }
-    ]
-  }
+    "isSentry": true,
+    "throwedAt": "2012-01-01T12:00:00Z"
+  }]
 }
 ```
 
-文档化错误信息格式，以及客户端可能遇到的错误信息`type`。
-
-#### 显示频率限制状态
-
-客户端的访问速度限制可以维护服务器的良好状态，保证为其他客户端请求提供高性的服务。你可以使用[token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket)技术量化请求限制。
-
-为每一个带有`RateLimit-Remaining`响应头的请求，返回预留的请求 tokens。
-
-#### 保证响应 JSON 最小化
+同时自动生成错误文档，以及客户端可能遇到的错误信息`type`。
 
 请求中多余的空格会增加响应大小，而且现在很多的 HTTP 客户端都会自己输出可读格式（"prettify"）的 JSON。所以最好保证响应 JSON 最小化，例如：
 
@@ -353,6 +375,14 @@ HTTP/1.1 429 Too Many Requests
 你可以提供可选的方式为客户端提供更详细可读的响应，使用查询参数（例如：`?pretty=true`）或者通过`Accept`头信息参数（例如：`Accept: application/vnd.heroku+json; version=3; indent=4;`）。
 
 ### 工件（Artifacts）
+
+#### 提供服务的状态查询接口
+
+所有的服务均提供`/api/status` 来返回当前服务的状态。在每个状态返回结果中需要饱含一下内容：
+
+```yaml
+- 
+```
 
 #### 提供完整的 Swagger 文档
 
