@@ -11,4 +11,5 @@ redirects:
   management/agile-scrum: ./management/agile-scrum.md
   dev/api: ./dev/api.md
   dev/clean-code: ./dev/clean-code.md
+  dev/project-template: ./dev/project-template.md
   devops/ci-cd: ./devops/ci-cd.md
