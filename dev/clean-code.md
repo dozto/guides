@@ -4,19 +4,6 @@ Original Repository: [ryanmcdermott/clean-code-javascript](https://github.com/ry
 
 引用自[clean-code-js](https://github.com/alivebao/clean-code-js)
 
-## 目录
-
-1. [介绍](#介绍)
-2. [变量](#变量)
-3. [函数](#函数)
-4. [对象和数据结构](#objects-and-data-structures)
-5. [类](#类)
-6. [测试](#测试)
-7. [并发](#并发)
-8. [错误处理](#错误处理)
-9. [格式化](#格式化)
-10. [注释](#注释)
-
 ## 介绍
 
 [作者](https://github.com/ryanmcdermott)根据 Robert C. Martin [_《代码整洁之道》_](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)总结了适用于 JavaScript 的软件工程原则[《Clean Code JavaScript》](https://github.com/ryanmcdermott/clean-code-javascript)。
