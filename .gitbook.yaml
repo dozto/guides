@@ -13,3 +13,4 @@ redirects:
   dev/clean-code: ./dev/clean-code.md
   dev/project-template: ./dev/project-template.md
   devops/ci-cd: ./devops/ci-cd.md
+  finance/general: ./finance/general.md

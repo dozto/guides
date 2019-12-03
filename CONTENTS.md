@@ -19,3 +19,7 @@
 ## DEVOPS
 
 - [测试](devops/ci-cd.md)
+
+## FINANCE
+
+- [通用知识](finance/general.md)
