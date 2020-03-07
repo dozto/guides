@@ -2,24 +2,25 @@
 
 ## GENERAL
 
-- [沟通方式[DEV]](general/communication.md)
-- [项目流程[PROTO]](general/project-process.md)
+- [沟通方式[试行]](general/communication.md)
+- [项目流程[原型]](general/project-process.md)
 
 ## AGILE
 
-- [分工协作[PROTO]](management/cooperation.md)
+- [分工协作[原型]](management/cooperation.md)
 - [SCRUM 说明](management/agile-scrum.md)
+- [SCRUM 实践规范](management/agile-practise.md)
 
 ## DEV
 
-- [代码模版及使用规范[DEV]](dev/project-template.md)
+- [代码模版及使用规范[试行]](dev/project-template.md)
 - [API 开发规范](dev/api.md)
-- [代码规范[DEV]](dev/clean-code.md)
+- [代码规范[试行]](dev/clean-code.md)
 
 ## DEVOPS
 
-- [测试[PROTO]](devops/ci-cd.md)
+- [测试[原型]](devops/ci-cd.md)
 
 ## FINANCE
 
-- [通用知识[PROTO]](finance/general.md)
+- [财务要求&规范[原型]](finance/general.md)
