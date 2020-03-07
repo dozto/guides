@@ -9,7 +9,7 @@
 
 - [分工协作[原型]](management/cooperation.md)
 - [SCRUM 说明](management/agile-scrum.md)
-- [SCRUM 实践规范](management/agile-practise.md)
+- [SCRUM 实践规范[试行]](management/agile-practise.md)
 
 ## DEV
 
