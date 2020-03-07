@@ -44,9 +44,9 @@ Accept: application/vnd.heroku+json; version=3
 
 ### 为多语言客户端端通过`Accept-Language`提供多语言支持
 
-在需要多语言支持的情况下，后端返回的人类可读信息需要匹配请求中的`Accpet-Language`，可用的`Accpet-Language`值包括`zh`, `en`, `zh-CN`以及 `en-US`。这里的`Accept-Language`是一个可选选项，默认值根据不同项目而不同。
+在需要多语言支持的情况下，后端返回的人类可读信息需要匹配请求中的`Accpet-Language`，可用的`Accpet-Language`值包括`zh-CN`以及 `en-US`。这里的`Accept-Language`是一个可选选项，默认值根据不同项目而不同。
 
-例如，在`Accpet-Language` 为`zh`的情况下，返回的错误信息如下。
+例如，在`Accpet-Language` 为`zh-CN`的情况下，返回的错误信息如下。
 
 ```json
 {
