@@ -1,6 +1,6 @@
 # HTTP API 设计指南
 
-> 翻译自 `HTTP API Design Guide` [https://github.com/interagent/http-api-design](https://github.com/interagent/http-api-design)
+> 引用自 `HTTP API Design Guide` [https://github.com/interagent/http-api-design](https://github.com/interagent/http-api-design)
 >
 > 由 Dozto 根据自身实践改进，最后更新日期**12th Aug, 2019**
 
@@ -282,6 +282,7 @@ Content-Type: application/json;charset=utf-8
 ### 生成结构化的错误
 
 响应错误的时，生成统一的、结构化的错误信息。所有错误需要放在`errors`中返回给前端，同时每个 error 需要遵循以下结构。
+消息的多语言通过请求的`Accept-Language`的字段来判断，传输的值使用格式`'en-US' or 'fr-CA'`.
 
 ```yaml
 - requestId: 请求的X-Request-Id，方便对异常进行追踪。
@@ -314,14 +315,7 @@ HTTP/1.1 429 Too Many Requests
 请求中多余的空格会增加响应大小，而且现在很多的 HTTP 客户端都会自己输出可读格式（"prettify"）的 JSON。所以最好保证响应 JSON 最小化，例如：
 
 ```json
-{
-  "beta": false,
-  "email": "alice@heroku.com",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "lastLogin": "2012-01-01T12:00:00Z",
-  "createdAt": "2012-01-01T12:00:00Z",
-  "updatedAt": "2012-01-01T12:00:00Z"
-}
+{"beta":false,"email":"alice@heroku.com","id":"01234567-89ab-cdef-0123-456789abcdef","last_login":"2012-01-01T12:00:00Z","created_at":"2012-01-01T12:00:00Z","updated_at":"2012-01-01T12:00:00Z"}
 ```
 
 而不是这样：
@@ -343,7 +337,7 @@ HTTP/1.1 429 Too Many Requests
 
 ### 提供服务的状态查询接口
 
-所有的服务均提供`/api/status` 来返回当前服务的状态。在每个状态返回结果中需要饱含一下内容（待商榷）：
+在提供`X-Admin-Key`情况下,所有的服务均提供`/api/status` 来返回当前服务的状态。在每个状态返回结果中需要饱含一下内容（待商榷）：
 
 ```yaml
 # TBD check lib `systeminformation`
@@ -390,8 +384,6 @@ HTTP/1.1 429 Too Many Requests
 
 ### 描述稳定性
 
-描述每个的 API 的稳定性或是它在各种各样节点环境中的完备性和稳定性，例如：加上 原型版（prototype）/开发版（development）/产品版（production）等标记（默认省略）。
-
-更多关于可能的稳定性和改变管理的方式，查看 [Heroku API compatibility policy](https://devcenter.heroku.com/articles/api-compatibility-policy)
+描述每个的 API 的稳定性或是它在各种各样节点环境中的完备性和稳定性，例如：加上 原型版（proto）/开发版（dev）/产品版（prod）等标记（默认省略）。
 
 一旦你的 API 宣布产品正式版本及稳定版本时，不要在当前 API 版本中做一些不兼容的改变。如果你需要，请创建一个新的版本的 API。
