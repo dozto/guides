@@ -57,3 +57,20 @@
 - `yarn dev`: 在开发模式启动项目。(开发中使用这个命令启动项目)
 
 - `yarn start`: 再生产环境模式启动项目。（生产环境中使用这个命令启动项目）
+
+## 错误处理
+
+### 返回数据解构
+```yaml
+status: string! # 记录错误代码，用户graphql或restful返回
+data: any!
+error: object
+```
+### Error包含字段
+```yaml
+service: string! # 记录错误发生所在的服务
+code: string! # 用于开发之间交流沟通错误，从开发角使用有意义的内容如`USER_INVALID_ROLE`
+traceId: string! # 用户追踪请求的id，请求id来自`X-Trace-Id`，可以用来查询log来查询相关请求。
+isSentry: bool! # 记录错误是否上报到sentry。
+exceptions: [Errors] # 导致问题的其他Error，来自其他service，或第三方服务，或者是校验错误。
+```
