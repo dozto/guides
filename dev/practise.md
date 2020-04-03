@@ -14,9 +14,37 @@
 ## 错误可复现
 为了解决开发中出现的各种异常，同时考虑到客户一般不会有能力提供复现方法，需要尽可能的记录异常情况，方便再出现异常时定位错误
 ### 请求可追踪(通用库实现)
-为每一条请求添加一个唯一的`reqId`, 对异常的错误记录日志。(**日志管理系统**)
+为每一条请求添加一个唯一的`X-Trace-Id`, 对异常的错误记录日志。(**日志管理系统**)
 
 ## 核心代码的测试
 根据不同项目和客户的要求，对测试要请也不一样，不过对于项目核心功能(核心业务逻辑，支付等)最少提供单元测试代码(使用jest)。
 同时抽象出来共享的组件包需要有99%+的测试覆盖率保证功能正常。
 
+## 错误处理
+
+### 返回数据解构
+```yaml
+meta: object! 
+data: [object || array || null]! # 使用object或array返回数据，不需要返回数据的地方返回`null` (创建返回新建的数据，更新返回更新后的数据，删除返回空)
+error: object
+```
+
+### Meta包含字段
+Meta 信息在所有返回中都需要包含。
+```yaml
+status: string! # 记录错误代码，用户graphql或restful返回
+previous: string # Cursor 分页 上一页
+next: string # Cursor 分页 下一页
+hasNext: boolean # Cursor 分页 是否还有下一页
+```
+
+### Error包含字段
+错误仅需要在服务端发生错误的时候返回。
+```yaml
+service: string! # 记录错误发生所在的服务
+code: string! # 用于开发之间交流沟通错误，从开发角使用有意义的内容如`USER_INVALID_ROLE`
+message: string! # 用于对用户说明错误内容，需要做i18n根据`accept-language`
+exceptions: [Errors] # 导致问题的其他Error，来自其他service，或第三方服务，或者是校验错误。
+traceId: string! # 用户追踪请求的id，请求id来自`X-Trace-Id`，可以用来查询log来查询相关请求。
+isSentry: bool! # 记录错误是否上报到sentry。
+```
