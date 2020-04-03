@@ -12,7 +12,7 @@
 - [SCRUM 实践规范[试行]](management/agile-practise.md)
 
 ## DEV
-
+- [开发最佳实践](dev/practise.md)
 - [代码模版及使用规范[试行]](dev/project-template.md)
 - [API 开发规范](dev/api.md)
 - [代码规范[试行]](dev/clean-code.md)
