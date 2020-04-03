@@ -62,10 +62,19 @@
 
 ### 返回数据解构
 ```yaml
-status: string! # 记录错误代码，用户graphql或restful返回
+meta: object! 
 data: any!
 error: object
 ```
+
+### Meta包含字段
+```yaml
+status: string! # 记录错误代码，用户graphql或restful返回
+previous: string # Cursor 分页 上一页
+next: string # Cursor 分页 下一页
+hasNext: boolean # Cursor 分页 是否还有下一页
+```
+
 ### Error包含字段
 ```yaml
 service: string! # 记录错误发生所在的服务
