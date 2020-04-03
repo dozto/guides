@@ -63,7 +63,7 @@
 ### 返回数据解构
 ```yaml
 meta: object! 
-data: any!
+data: any! # 使用object或array返回数据，不需要返回数据的地方返回`null` (创建返回新建的数据，更新返回更新后的数据，删除返回空)
 error: object
 ```
 
