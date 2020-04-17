@@ -1,5 +1,3 @@
-# Dozto 开发实践
-
 # 🧩 Git Flow
 
 为了方便代码管理以及 CI/CD 集成需要，在开发中我们遵循 Vincent Driessen 提出的 [Git Flow 流程](https://nvie.com/posts/a-successful-git-branching-model/)，并需要确保：
